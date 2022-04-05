@@ -2,6 +2,7 @@ provider "google" {
   project = var.project
   region  = var.region
 }
+
 resource "google_compute_firewall" "firewall" {
   name    = "gritfy-firewall-externalssh"
   network = "default"
@@ -12,16 +13,18 @@ resource "google_compute_firewall" "firewall" {
   source_ranges = ["0.0.0.0/0"] # Not So Secure. Limit the Source Range
   target_tags   = ["externalssh"]
 }
+
 resource "google_compute_firewall" "webserverrule" {
   name    = "gritfy-webserver"
   network = "default"
   allow {
     protocol = "tcp"
-    ports    = ["80","443"]
+    ports    = ["80"] # Allow access to only tcp/80
   }
   source_ranges = ["0.0.0.0/0"] # Not So Secure. Limit the Source Range
   target_tags   = ["webserver"]
 }
+
 # We create a public IP address for our google compute instance to utilize
 resource "google_compute_address" "static" {
   name = "vm-public-address"
@@ -29,6 +32,7 @@ resource "google_compute_address" "static" {
   region = var.region
   depends_on = [ google_compute_firewall.firewall ]
 }
+
 resource "google_compute_instance" "dev" {
   name         = "devserver"
   machine_type = "f1-micro"
@@ -39,12 +43,14 @@ resource "google_compute_instance" "dev" {
       image = "centos-cloud/centos-7"
     }
   }
+  
   network_interface {
     network = "default"
     access_config {
       nat_ip = google_compute_address.static.address
     }
   }
+  
   provisioner "remote-exec" {
     connection {
       host        = google_compute_address.static.address
@@ -59,12 +65,14 @@ resource "google_compute_instance" "dev" {
       "sudo nginx -v",
     ]
   }
+  
   # Ensure firewall rule is provisioned before server, so that SSH doesn't fail.
   depends_on = [ google_compute_firewall.firewall, google_compute_firewall.webserverrule ]
   service_account {
     email  = var.email
     scopes = ["compute-ro"]
   }
+  
   metadata = {
     ssh-keys = "${var.user}:${file(var.publickeypath)}"
   }
