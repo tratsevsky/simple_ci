@@ -40,7 +40,8 @@ resource "google_compute_instance" "dev" {
   tags         = ["externalssh","webserver"]
   boot_disk {
     initialize_params {
-      image = "centos-cloud/centos-7"
+      #image = "centos-cloud/centos-7"
+      image = "ubuntu-os-cloud/ubuntu-2004-lts"
     }
   }
   
@@ -60,9 +61,10 @@ resource "google_compute_instance" "dev" {
       private_key = file(var.privatekeypath)
     }
     inline = [
-      "sudo yum -y install epel-release",
-      "sudo yum -y install nginx",
-      "sudo nginx -v",
+#       "sudo yum -y install epel-release",
+#       "sudo yum -y install nginx",
+#       "sudo nginx -v",
+        "pwd",
     ]
   }
   
