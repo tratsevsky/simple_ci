@@ -65,6 +65,10 @@ resource "google_compute_instance" "dev" {
 #       "sudo yum -y install nginx",
 #       "sudo nginx -v",
         "pwd",
+        "sudo apt update",
+        "sudo apt upgrade -y",
+        "sudo apt install apache2",
+        "sudo ufw allow 'Apache'"
     ]
   }
   
