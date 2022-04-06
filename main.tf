@@ -67,7 +67,7 @@ resource "google_compute_instance" "dev" {
 #       "pwd",
         "sudo apt update",
         "sudo apt upgrade -y",
-        "sudo apt install apache2",
+        "sudo apt install apache2 -y",
 #         "sudo su",
 #         "cd /var/www/html",
 #         "mv index.html index.html.ORIG",
