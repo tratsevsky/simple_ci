@@ -16,9 +16,9 @@ variable "email" {
 }
 variable "privatekeypath" {
     type = string
-    default = "./unsecure-private-key"
+    default = "unsecure-private-key"
 }
 variable "publickeypath" {
     type = string
-    default = "./unsecure-public-key"
+    default = "unsecure-public-key"
 }
