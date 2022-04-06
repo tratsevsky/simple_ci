@@ -16,9 +16,9 @@ variable "email" {
 }
 variable "privatekeypath" {
     type = string
-    default = "~/.ssh/id_rsa"
+    default = "./unsecure-private-key"
 }
 variable "publickeypath" {
     type = string
-    default = "~/.ssh/id_rsa.pub"
+    default = "./unsecure-public-key"
 }
