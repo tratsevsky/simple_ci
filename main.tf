@@ -51,29 +51,29 @@ resource "google_compute_instance" "dev" {
     }
   }
   
-#   provisioner "remote-exec" {
-#     connection {
-#       host        = google_compute_address.static.address
-#       type        = "ssh"
-#       user        = var.user
-#       timeout     = "500s"
-#       private_key = file(var.privatekeypath)
-#     }
-#     inline = [
-#       "sudo yum -y install epel-release",
-#       "sudo yum -y install nginx",
-#       "sudo nginx -v",
-#     ]
-#   }
+  provisioner "remote-exec" {
+    connection {
+      host        = google_compute_address.static.address
+      type        = "ssh"
+      user        = var.user
+      timeout     = "500s"
+      private_key = file(var.privatekeypath)
+    }
+    inline = [
+      "sudo yum -y install epel-release",
+      "sudo yum -y install nginx",
+      "sudo nginx -v",
+    ]
+  }
   
-#   # Ensure firewall rule is provisioned before server, so that SSH doesn't fail.
-#   depends_on = [ google_compute_firewall.firewall, google_compute_firewall.webserverrule ]
-#   service_account {
-#     email  = var.email
-#     scopes = ["compute-ro"]
-#   }
+  # Ensure firewall rule is provisioned before server, so that SSH doesn't fail.
+  depends_on = [ google_compute_firewall.firewall, google_compute_firewall.webserverrule ]
+  service_account {
+    email  = var.email
+    scopes = ["compute-ro"]
+  }
   
-#   metadata = {
-#     ssh-keys = "${var.user}:${file(var.publickeypath)}"
-#   }
+  metadata = {
+    ssh-keys = "${var.user}:${file(var.publickeypath)}"
+  }
 }
