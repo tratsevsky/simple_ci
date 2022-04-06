@@ -68,10 +68,10 @@ resource "google_compute_instance" "dev" {
         "sudo apt update",
         "sudo apt upgrade -y",
         "sudo apt install apache2",
-        "sudo su",
-        "cd /var/www/html",
-        "mv index.html index.html.ORIG",
-        "echo '<p> My Instance! </p>' >> /var/www/html/index.html",
+#         "sudo su",
+#         "cd /var/www/html",
+#         "mv index.html index.html.ORIG",
+#         "echo '<p> My Instance! </p>' >> /var/www/html/index.html",
     ]
   }
   
