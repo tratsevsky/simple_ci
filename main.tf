@@ -61,10 +61,6 @@ resource "google_compute_instance" "dev" {
       private_key = file(var.privatekeypath)
     }
     inline = [
-#       "sudo yum -y install epel-release",
-#       "sudo yum -y install nginx",
-#       "sudo nginx -v",
-#       "pwd",
         "sudo apt update",
         "sudo apt upgrade -y",
         "sudo apt install apache2 -y",
