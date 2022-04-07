@@ -69,7 +69,7 @@ resource "google_compute_instance" "dev" {
         "sudo apt upgrade -y",
         "sudo apt install apache2 -y",
         "cd /var/www/html",
-        "sudo cp index.html index.html.ORIG"
+        "sudo cp index.html index.html.ORIG",
         "echo '<h1>Hello world from Warsaw!</h1> | sudo tee index.html",
     ]
   }
