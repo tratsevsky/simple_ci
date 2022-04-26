@@ -70,7 +70,19 @@ resource "google_compute_instance" "dev" {
     ]
   }
   
- resource "google_compute_instance" "node1" {
+  # Ensure firewall rule is provisioned before server, so that SSH doesn't fail.
+  depends_on = [ google_compute_firewall.firewall, google_compute_firewall.webserverrule ]
+  service_account {
+    email  = var.email
+    scopes = ["compute-ro"]
+  }
+  
+  metadata = {
+    ssh-keys = "${var.user}:${file(var.publickeypath)}"
+  }
+}
+
+resource "google_compute_instance" "node1" {
   name         = "node1"
   machine_type = "f1-micro"
   zone         = "${var.region}-a"
@@ -87,8 +99,6 @@ resource "google_compute_instance" "dev" {
     network = "default"
   }
   
- }
-  
   # Ensure firewall rule is provisioned before server, so that SSH doesn't fail.
   depends_on = [ google_compute_firewall.firewall, google_compute_firewall.webserverrule ]
   service_account {
@@ -99,4 +109,5 @@ resource "google_compute_instance" "dev" {
   metadata = {
     ssh-keys = "${var.user}:${file(var.publickeypath)}"
   }
+  
 }
