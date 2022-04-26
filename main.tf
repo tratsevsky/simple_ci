@@ -35,6 +35,7 @@ resource "google_compute_address" "static" {
 
 resource "google_compute_instance" "dev" {
   name         = "devserver"
+  count        = 2
   machine_type = "f1-micro"
   zone         = "${var.region}-a"
   tags         = ["externalssh","webserver"]
