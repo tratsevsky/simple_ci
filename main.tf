@@ -35,7 +35,6 @@ resource "google_compute_address" "static" {
 
 resource "google_compute_instance" "dev" {
   name         = "devserver"
-  count        = 2
   machine_type = "f1-micro"
   zone         = "${var.region}-a"
   tags         = ["externalssh","webserver"]
@@ -70,6 +69,25 @@ resource "google_compute_instance" "dev" {
         "echo '<h1>Hello world from Warsaw!</h1>' | sudo tee index.html",
     ]
   }
+  
+ resource "google_compute_instance" "node1" {
+  name         = "node1"
+  machine_type = "f1-micro"
+  zone         = "${var.region}-a"
+  tags         = ["managed"]
+  
+  boot_disk {
+    initialize_params {
+      #image = "centos-cloud/centos-7"
+      image = "ubuntu-os-cloud/ubuntu-2004-lts"
+    }
+  }
+  
+  network_interface {
+    network = "default"
+  }
+  
+ }
   
   # Ensure firewall rule is provisioned before server, so that SSH doesn't fail.
   depends_on = [ google_compute_firewall.firewall, google_compute_firewall.webserverrule ]
