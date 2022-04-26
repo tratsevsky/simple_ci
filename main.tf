@@ -67,6 +67,9 @@ resource "google_compute_instance" "dev" {
         "cd /var/www/html",
         "sudo cp index.html index.html.ORIG",
         "echo '<h1>Hello world from Warsaw!</h1>' | sudo tee index.html",
+        "sudo apt install software-properties-common",
+        "sudo add-apt-repository --yes --update ppa:ansible/ansible",
+        "sudo apt install ansible -y",
     ]
   }
   
