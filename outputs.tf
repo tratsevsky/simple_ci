@@ -1,11 +1,11 @@
 output "instance-id" {
   description = "ID of the GCP Compute instance"
-  value = google_compute_instance.dev.id
+  value = google_compute_instance.dev[count.index].id
 }
 
 output "private-ip" {
   description = "Private IP address of the GCP Compute instance"
-  value = google_compute_instance.dev.network_interface.0.network_ip
+  value = google_compute_instance.dev[count.index].network_interface.0.network_ip
 }
 
 output "public-ip" {
