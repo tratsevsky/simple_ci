@@ -111,3 +111,67 @@ resource "google_compute_instance" "node1" {
   }
   
 }
+
+
+
+resource "google_compute_instance" "node2" {
+  name         = "node2"
+  machine_type = "f1-micro"
+  zone         = "${var.region}-a"
+  tags         = ["managed"]
+  
+  boot_disk {
+    initialize_params {
+      #image = "centos-cloud/centos-7"
+      image = "ubuntu-os-cloud/ubuntu-2004-lts"
+    }
+  }
+  
+  network_interface {
+    network = "default"
+  }
+  
+  # Ensure firewall rule is provisioned before server, so that SSH doesn't fail.
+  depends_on = [ google_compute_firewall.firewall, google_compute_firewall.webserverrule ]
+  service_account {
+    email  = var.email
+    scopes = ["compute-ro"]
+  }
+  
+  metadata = {
+    ssh-keys = "${var.user}:${file(var.publickeypath)}"
+  }
+  
+}
+
+resource "google_compute_instance" "node3" {
+  name         = "node3"
+  machine_type = "f1-micro"
+  zone         = "${var.region}-a"
+  tags         = ["managed"]
+  
+  boot_disk {
+    initialize_params {
+      #image = "centos-cloud/centos-7"
+      image = "ubuntu-os-cloud/ubuntu-2004-lts"
+    }
+  }
+  
+  network_interface {
+    network = "default"
+  }
+  
+  # Ensure firewall rule is provisioned before server, so that SSH doesn't fail.
+  depends_on = [ google_compute_firewall.firewall, google_compute_firewall.webserverrule ]
+  service_account {
+    email  = var.email
+    scopes = ["compute-ro"]
+  }
+  
+  metadata = {
+    ssh-keys = "${var.user}:${file(var.publickeypath)}"
+  }
+  
+}
+
+
